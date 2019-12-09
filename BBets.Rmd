@@ -1,7 +1,7 @@
 ---
 title: "Brownlows Bets"
-author: "Put your name here!"
-date: "put the date here"
+author: "yuripsa palacios!"
+date: "november 21,2019"
 output: html_document: default
  ---
 
@@ -15,20 +15,59 @@ output: html_document: default
 
 # Methods
 
-<!--Decide on your methods:  In this section explain the approach you will take to attack the issue --- how will you decide on a likely estimate of professor Brownlow's earnings or losses after 1137 bets. Also explain how you construct a 95% confidence interval about your estimate of his winnings !-->
+<!--Decide on your methods:  In this section explain the approach you will take to attack the issue --- how will you decide on a likely estimate of professor Brownlow's earnings
 
 
 #Profit Estimate
 
 <!--Explain and display the results of your method of coming up with the estimate of professor Brownlows betting!-->
 
+first we create the year data and a vector to contain samples
+```{r}
+Bdays = 1:365
+Bsamples = vector('numeric')
+TotalDollars = 0
+saveDollars=vector('numeric')
+```
+
+Now we will run the simulation 1,137 times.
+
+```{r}
+for(loop in 1:1000){
+TotalDollars=0
+for(i in 1:1137) {
+Bsamples = sample(Bdays,35, replace=TRUE)
+if (length(unique(Bsamples)) == 35) {
+TotalDollars = TotalDollars -2
+} else{
+TotalDollars = TotalDollars +1
+}
+}
+saveDollars[loop] = TotalDollars
+}
+hist(saveDollars)
+```
+
+```{r}
+print(mean(saveDollars))
+```
+
 
 # Confidence interval of Brownlows earning
 
 <!--Explain and display your method of coming up with a 95% confidence interval of  professor Brownlows-->
 
+```{r}
+stdevDollars = sd(saveDollars)
+meanDollars=mean(saveDollars)
+CI = c(meanDollars-2*stdevDollars, meanDollars+2*stdevDollars)
+print(CI)
+```
+
 
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If professor Brownlow is consistantly making or losing money how could he change his payout so that his profits center on zero?  Also discuss what size his class should be in order to have his current scheme balance at zero profit.!-->
+
+To adjust the payout, he could change his win to +1 and his losses to -4.50 which would center it at about zero. To adjust the class size, it would have to be about 28 or 29, then his payout woud be centered around zero.
 
